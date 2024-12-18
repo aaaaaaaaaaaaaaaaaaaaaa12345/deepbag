@@ -1,0 +1,198 @@
+local player = game.Players.LocalPlayer
+local gui = player:WaitForChild("PlayerGui")
+
+-- Ekranda tüm GUI'yi oluşturuyoruz
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = gui
+
+-- Çerçeve oluşturuluyor (TextBox'ı içinde barındıracak)
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 150)  -- Çerçevenin boyutları
+frame.Position = UDim2.new(0.5, -150, 0.5, -75)  -- Ekranın ortasında konumlandırılıyor
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.Parent = screenGui
+
+-- "Key System" başlık etiketi oluşturuluyor
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0, 30)  -- Başlık için yeterli alan
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "Key System"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+titleLabel.TextSize = 20
+titleLabel.Parent = frame
+
+-- Kapatma (X) butonu
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 0) -- Sağ üst köşe
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.Parent = titleLabel
+
+-- Küçültme (-) butonu
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+minimizeButton.Position = UDim2.new(1, -70, 0, 0) -- Sağ üst köşe
+minimizeButton.Text = "-"
+minimizeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Siyah arka plan
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Beyaz metin
+minimizeButton.Parent = titleLabel
+
+-- TextBox oluşturuluyor (yazı girişi için)
+local textBox = Instance.new("TextBox")
+textBox.Size = UDim2.new(0, 250, 0, 50)
+textBox.Position = UDim2.new(0.5, -125, 0.5, -25) -- Çerçeveye ortalanmış
+textBox.Text = ""  -- Başlangıçta boş
+textBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+textBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+textBox.PlaceholderText = "Yazınız buraya..."  -- Yazı kutusu boşken görünür olan metin
+textBox.ClearTextOnFocus = false  -- Fokus yapıldığında yazı kaybolmasın
+textBox.TextInputType = Enum.TextInputType.Password  -- Yazıların gizlenmesi için Password moduna alındı
+textBox.Parent = frame
+
+-- Check Key butonu oluşturuluyor
+local checkKeyButton = Instance.new("TextButton")
+checkKeyButton.Size = UDim2.new(0, 250, 0, 40)
+checkKeyButton.Position = UDim2.new(0.5, -125, 0.5, 40)  -- TextBox'ın altına yerleştiriliyor
+checkKeyButton.Text = "Check Key"
+checkKeyButton.BackgroundColor3 = Color3.fromRGB(0, 200, 0)  -- Yeşil renk
+checkKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+checkKeyButton.Parent = frame
+
+-- Get Key butonu oluşturuluyor
+local getKeyButton = Instance.new("TextButton")
+getKeyButton.Size = UDim2.new(0, 250, 0, 40)
+getKeyButton.Position = UDim2.new(0.5, -125, 0.5, 80)  -- "Check Key" butonunun altına yerleştiriliyor
+getKeyButton.Text = "Get Key"
+getKeyButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Kırmızı renk
+getKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+getKeyButton.Parent = frame
+
+-- Yanlış şifre girildiğinde oyuncuyu atma
+local function handleIncorrectKey()
+    -- Yanlış şifre girildiyse oyuncuyu atıyoruz
+    player:Kick("Yanlış anahtar girdiniz!")
+end
+
+-- Yeni GUI'yi oluşturacak fonksiyon
+local function openNewGui()
+    -- Ekranda başka bir panel (Frame) gösterelim
+    local panelFrame = Instance.new("Frame")
+    panelFrame.Size = UDim2.new(0, 250, 0, 200)  -- Başlangıç boyutu
+    panelFrame.Position = UDim2.new(1, -275, 0, 50)  -- Sağ üst köşeye yerleşmesi için
+    panelFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    panelFrame.Parent = screenGui
+    panelFrame.Active = true  -- Panelin hareket ettirilebilmesi için aktif hale getiriyoruz
+
+    -- Panelin üst kısmında bir başlık çubuğu ekliyoruz (Küçültme ve Kapatma butonları için)
+    local titleBar = Instance.new("Frame")
+    titleBar.Size = UDim2.new(1, 0, 0, 30) -- Başlık çubuğu
+    titleBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    titleBar.Parent = panelFrame
+
+    -- Kapatma (X) butonu
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -35, 0, 0) -- Sağ üst köşe
+    closeButton.Text = "X"
+    closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.Parent = titleBar
+
+    -- Küçültme butonunun rengini siyah yapıyoruz
+    local minimizeButton = Instance.new("TextButton")
+    minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+    minimizeButton.Position = UDim2.new(1, -70, 0, 0) -- Sağ üst köşe
+    minimizeButton.Text = "-"
+    minimizeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Siyah arka plan
+    minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Beyaz metin
+    minimizeButton.Parent = titleBar
+
+    -- Butonları ekleyelim: ON ve OFF butonları
+    local onButton = Instance.new("TextButton")
+    onButton.Size = UDim2.new(0, 100, 0, 50)
+    onButton.Position = UDim2.new(0, 50, 0, 50)
+    onButton.Text = "ON"
+    onButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    onButton.Parent = panelFrame
+
+    local offButton = Instance.new("TextButton")
+    offButton.Size = UDim2.new(0, 100, 0, 50)
+    offButton.Position = UDim2.new(0, 50, 0, 120)
+    offButton.Text = "OFF"
+    offButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    offButton.Parent = panelFrame
+
+    -- Kapatma butonuna tıklayınca paneli kapatma
+    closeButton.MouseButton1Click:Connect(function()
+        panelFrame.Visible = false
+    end)
+
+    -- Küçültme butonuna tıklayınca paneli küçültme
+    minimizeButton.MouseButton1Click:Connect(function()
+        if panelFrame.Size == UDim2.new(0, 250, 0, 200) then
+            -- Paneli küçültme
+            panelFrame.Size = UDim2.new(0, 250, 0, 50)
+            onButton.Visible = false  -- ON butonunu gizle
+            offButton.Visible = false  -- OFF butonunu gizle
+        else
+            -- Paneli eski boyutlarına getirme
+            panelFrame.Size = UDim2.new(0, 250, 0, 200)
+            onButton.Visible = true  -- ON butonunu tekrar göster
+            offButton.Visible = true  -- OFF butonunu tekrar göster
+        end
+    end)
+
+    -- Butonlar için işlevsellik
+    onButton.MouseButton1Click:Connect(function()
+        -- ON butonuna basıldığında adminFrame'i aktif ve görünür yap
+        game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Active = true
+        game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Visible = true
+    end)
+
+    offButton.MouseButton1Click:Connect(function()
+        -- OFF butonuna basıldığında adminFrame'i pasif ve gizle
+        game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Active = false
+        game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Visible = false
+    end)
+end
+
+-- Check Key butonuna tıklanınca kontrol işlemi yapılacak
+checkKeyButton.MouseButton1Click:Connect(function()
+    local inputText = textBox.Text
+
+    if inputText == "arasvebaris" then
+        -- Doğru anahtar girildiğinde yeni GUI açılacak
+        openNewGui()
+
+        -- Eski GUI'yi gizleyelim
+        frame.Visible = false
+    else
+        -- Eğer yazı doğru değilse, oyuncuyu oyundan atıyoruz
+        handleIncorrectKey()
+    end
+end)
+
+-- Get Key butonuna tıklanınca yapılacak işlemler
+getKeyButton.MouseButton1Click:Connect(function()
+    setclipboard "https://lootdest.org/s?36a1cbe0"
+
+    -- "Copied to Clipboard" mesajını gösterelim
+    local copiedLabel = Instance.new("TextLabel")
+    copiedLabel.Size = UDim2.new(0, 250, 0, 30)
+    copiedLabel.Position = UDim2.new(0.5, -125, 0, 130)  -- Alt kısmında yer alacak
+    copiedLabel.Text = "Link Copied to Clipboard"
+    copiedLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    copiedLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 128)  -- Koyu mavi renk
+    copiedLabel.TextSize = 18
+    copiedLabel.Parent = screenGui
+
+    -- 2 saniye sonra mesajı sil
+    wait(2)
+    copiedLabel:Destroy()
+
+    -- Konsola "saer" yazdırma
+    setclipboard "https://lootdest.org/s?36a1cbe0"
+end)
