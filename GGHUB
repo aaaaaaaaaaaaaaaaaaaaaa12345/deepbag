@@ -40,7 +40,7 @@ wait(0.8)
 	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
 ]]
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("GGHUB [beta]", "Ocean")
+local Window = Library.CreateLib("GGHUB", "Ocean")
 
 local Main = Window:NewTab("Scripts")
 local MainSection = Main:NewSection("Universal scripts")
