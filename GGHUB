@@ -542,7 +542,7 @@ end)
 
 local MainSection = Main:NewSection("Lucky Blocks")
 
-MainSection:NewButton("Spawn Block", "ButtonInfo", function()
+MainSection:NewButton("Script1", "ButtonInfo", function()
     -- Roblox Script: Button GUI for Spawning Blocks
 
 -- Check if GUI is already active
@@ -704,13 +704,6 @@ end)
 
 end)
 
-MainSection:NewButton("Spawn Void Block", "ButtonInfo", function()
-game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
-game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
-game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
-game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
-end)
-
 
 
 local MainSection = Main:NewSection("Natural Disaster Scripts")
@@ -786,7 +779,213 @@ end)
 local MainSection = Main:NewSection("Who Is The Spy? (KEYLESS)")
 
 MainSection:NewButton("Script1", "ButtonInfo", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/aaaaaaaaaaaaaaaaaaaaaa12345/deepbag/refs/heads/main/WhoIsSpy"))()
+    -- Roblox Script: Key Check GUI
+
+-- Check if GUI is already active
+if game.Players.LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("KeyCheckGui") then
+    game.Players.LocalPlayer.PlayerGui:FindFirstChild("KeyCheckGui"):Destroy()
+end
+
+-- Define the required key
+local REQUIRED_KEY = "arasvebaris"
+
+-- Create the ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "KeyCheckGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create a Frame for the GUI
+local guiFrame = Instance.new("Frame")
+guiFrame.Size = UDim2.new(0, 300, 0, 180)
+guiFrame.Position = UDim2.new(0.5, -150, 0.5, -90)
+guiFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+guiFrame.BorderSizePixel = 0
+guiFrame.Active = true
+guiFrame.Draggable = true
+guiFrame.Parent = screenGui
+
+-- Create a Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0, 30)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "Key Check"
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextSize = 20
+titleLabel.Parent = guiFrame
+
+-- Create Close (X) Button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.new(0.8, 0.2, 0.2)
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.TextSize = 18
+closeButton.Parent = guiFrame
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Create Minimize (-) Button
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+minimizeButton.Position = UDim2.new(1, -70, 0, 5)
+minimizeButton.Text = "-"
+minimizeButton.BackgroundColor3 = Color3.new(0.2, 0.6, 0.8)
+minimizeButton.TextColor3 = Color3.new(1, 1, 1)
+minimizeButton.Font = Enum.Font.SourceSansBold
+minimizeButton.TextSize = 18
+minimizeButton.Parent = guiFrame
+
+local isMinimized = false
+minimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    guiFrame.Size = isMinimized and UDim2.new(0, 300, 0, 30) or UDim2.new(0, 300, 0, 180)
+    for _, child in ipairs(guiFrame:GetChildren()) do
+        if child ~= titleLabel and child ~= closeButton and child ~= minimizeButton then
+            child.Visible = not isMinimized
+        end
+    end
+end)
+
+-- Create TextBox for Key Input
+local keyInput = Instance.new("TextBox")
+keyInput.Size = UDim2.new(0, 260, 0, 30)
+keyInput.Position = UDim2.new(0, 20, 0, 50)
+keyInput.PlaceholderText = "Enter your key"
+keyInput.Text = ""
+keyInput.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+keyInput.TextColor3 = Color3.new(1, 1, 1)
+keyInput.Font = Enum.Font.SourceSansBold
+keyInput.TextSize = 18
+keyInput.Parent = guiFrame
+
+-- Create Check Key Button
+local checkKeyButton = Instance.new("TextButton")
+checkKeyButton.Size = UDim2.new(0, 260, 0, 30)
+checkKeyButton.Position = UDim2.new(0, 20, 0, 90)
+checkKeyButton.Text = "Check Key"
+checkKeyButton.BackgroundColor3 = Color3.new(0.2, 0.6, 0.2)
+checkKeyButton.TextColor3 = Color3.new(1, 1, 1)
+checkKeyButton.Font = Enum.Font.SourceSansBold
+checkKeyButton.TextSize = 18
+checkKeyButton.Parent = guiFrame
+
+checkKeyButton.MouseButton1Click:Connect(function()
+    local inputText = keyInput.Text
+    if inputText == REQUIRED_KEY then
+        guiFrame:Destroy()
+
+        -- Create the new GUI
+        local newGuiFrame = Instance.new("Frame")
+        newGuiFrame.Size = UDim2.new(0, 300, 0, 200)
+        newGuiFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+        newGuiFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+        newGuiFrame.BorderSizePixel = 0
+        newGuiFrame.Active = true
+        newGuiFrame.Draggable = true
+        newGuiFrame.Parent = screenGui
+
+        local newTitleLabel = Instance.new("TextLabel")
+        newTitleLabel.Size = UDim2.new(1, 0, 0, 30)
+        newTitleLabel.Position = UDim2.new(0, 0, 0, 0)
+        newTitleLabel.BackgroundTransparency = 1
+        newTitleLabel.Text = "Admin Control"
+        newTitleLabel.TextColor3 = Color3.new(1, 1, 1)
+        newTitleLabel.Font = Enum.Font.SourceSansBold
+        newTitleLabel.TextSize = 20
+        newTitleLabel.Parent = newGuiFrame
+
+        local adminCloseButton = Instance.new("TextButton")
+        adminCloseButton.Size = UDim2.new(0, 30, 0, 30)
+        adminCloseButton.Position = UDim2.new(1, -35, 0, 5)
+        adminCloseButton.Text = "X"
+        adminCloseButton.BackgroundColor3 = Color3.new(0.8, 0.2, 0.2)
+        adminCloseButton.TextColor3 = Color3.new(1, 1, 1)
+        adminCloseButton.Font = Enum.Font.SourceSansBold
+        adminCloseButton.TextSize = 18
+        adminCloseButton.Parent = newGuiFrame
+        adminCloseButton.MouseButton1Click:Connect(function()
+            screenGui:Destroy()
+        end)
+
+        local adminMinimizeButton = Instance.new("TextButton")
+        adminMinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+        adminMinimizeButton.Position = UDim2.new(1, -70, 0, 5)
+        adminMinimizeButton.Text = "-"
+        adminMinimizeButton.BackgroundColor3 = Color3.new(0.2, 0.6, 0.8)
+        adminMinimizeButton.TextColor3 = Color3.new(1, 1, 1)
+        adminMinimizeButton.Font = Enum.Font.SourceSansBold
+        adminMinimizeButton.TextSize = 18
+        adminMinimizeButton.Parent = newGuiFrame
+
+        local isAdminMinimized = false
+        adminMinimizeButton.MouseButton1Click:Connect(function()
+            isAdminMinimized = not isAdminMinimized
+            newGuiFrame.Size = isAdminMinimized and UDim2.new(0, 300, 0, 30) or UDim2.new(0, 300, 0, 200)
+            for _, child in ipairs(newGuiFrame:GetChildren()) do
+                if child ~= newTitleLabel and child ~= adminCloseButton and child ~= adminMinimizeButton then
+                    child.Visible = not isAdminMinimized
+                end
+            end
+        end)
+
+        local onButton = Instance.new("TextButton")
+        onButton.Size = UDim2.new(0, 100, 0, 40)
+        onButton.Position = UDim2.new(0, 20, 0, 50)
+        onButton.Text = "On"
+        onButton.BackgroundColor3 = Color3.new(0.2, 0.6, 0.2)
+        onButton.TextColor3 = Color3.new(1, 1, 1)
+        onButton.Font = Enum.Font.SourceSansBold
+        onButton.TextSize = 18
+        onButton.Parent = newGuiFrame
+        onButton.MouseButton1Click:Connect(function()
+            game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Active = true
+            game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Visible = true
+        end)
+
+        local offButton = Instance.new("TextButton")
+        offButton.Size = UDim2.new(0, 100, 0, 40)
+        offButton.Position = UDim2.new(0, 130, 0, 50)
+        offButton.Text = "Off"
+        offButton.BackgroundColor3 = Color3.new(0.6, 0.2, 0.2)
+        offButton.TextColor3 = Color3.new(1, 1, 1)
+        offButton.Font = Enum.Font.SourceSansBold
+        offButton.TextSize = 18
+        offButton.Parent = newGuiFrame
+        offButton.MouseButton1Click:Connect(function()
+            game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Active = false
+            game.Players.LocalPlayer.PlayerGui.Interface.Main.adminFrame.Visible = false
+        end)
+    else
+        game.Players.LocalPlayer:Kick("Yanlis Anahtar")
+    end
+end)
+
+-- Create Get Key Button
+local getKeyButton = Instance.new("TextButton")
+getKeyButton.Size = UDim2.new(0, 260, 0, 30)
+getKeyButton.Position = UDim2.new(0, 20, 0, 130)
+getKeyButton.Text = "Get Key"
+getKeyButton.BackgroundColor3 = Color3.new(0.6, 0.6, 0.2)
+getKeyButton.TextColor3 = Color3.new(1, 1, 1)
+getKeyButton.Font = Enum.Font.SourceSansBold
+getKeyButton.TextSize = 18
+getKeyButton.Parent = guiFrame
+
+getKeyButton.MouseButton1Click:Connect(function()
+    setclipboard("https://lootdest.org/s?36a1cbe0")
+    game.StarterGui:SetCore("ChatMakeSystemMessage", {
+        Text = "Copied Link To Clipboard",
+        Color = Color3.new(0, 1, 0),
+        Font = Enum.Font.SourceSansBold,
+        FontSize = Enum.FontSize.Size24
+    })
+end)
+
 end)
 
 
