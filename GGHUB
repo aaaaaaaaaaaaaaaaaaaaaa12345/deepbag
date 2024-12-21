@@ -563,9 +563,9 @@ MainSection:NewButton("Spawn Galaxy Block", "ButtonInfo", function()
 end)
 
 MainSection:NewButton("Spawn Void Block", "ButtonInfo", function()
-    game.ReplicatedStorage.SpawnRainbowSuperBlock:FireServer()          
+game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
 game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
-game.ReplicatedStorage.SpawnRainbowSuperBlock:FireServer()
+game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
 game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
 end)
 
