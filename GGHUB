@@ -543,23 +543,165 @@ end)
 local MainSection = Main:NewSection("Lucky Blocks")
 
 MainSection:NewButton("Spawn Block", "ButtonInfo", function()
+    -- Roblox Script: Button GUI for Spawning Blocks
+
+-- Check if GUI is already active
+if game.Players.LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("SpawnBlocksGui") then
+    game.Players.LocalPlayer.PlayerGui:FindFirstChild("SpawnBlocksGui"):Destroy()
+end
+
+-- Create the ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "SpawnBlocksGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Display "MADE BY BARIS" with changing colors
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(0, 400, 0, 100)
+label.Position = UDim2.new(0.5, -200, 0.5, -50)
+label.BackgroundTransparency = 1
+label.TextScaled = true
+label.Font = Enum.Font.SourceSansBold
+label.Text = "MADE BY BARIS"
+label.Parent = screenGui
+
+local colors = {Color3.new(1, 0, 0), Color3.new(0, 1, 0), Color3.new(0, 0, 1), Color3.new(1, 1, 0), Color3.new(1, 0, 1), Color3.new(0, 1, 1)}
+for i = 1, 20 do
+    label.TextColor3 = colors[(i - 1) % #colors + 1]
+    task.wait(0.1)
+end
+label:Destroy()
+
+-- Create a Frame for the buttons
+local buttonFrame = Instance.new("Frame")
+buttonFrame.Size = UDim2.new(0, 250, 0, 400)
+buttonFrame.Position = UDim2.new(1, -260, 0, 10) -- Position at the top-right corner of the screen
+buttonFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+buttonFrame.BorderSizePixel = 0
+buttonFrame.Active = true
+buttonFrame.Draggable = true
+buttonFrame.Parent = screenGui
+
+-- Create a Title Label
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0, 30)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "Spawn Blocks"
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextSize = 20
+titleLabel.Parent = buttonFrame
+
+-- Create Close (X) Button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.new(0.8, 0.2, 0.2)
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.TextSize = 18
+closeButton.Parent = buttonFrame
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Create Minimize (-) Button
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+minimizeButton.Position = UDim2.new(1, -70, 0, 5)
+minimizeButton.Text = "-"
+minimizeButton.BackgroundColor3 = Color3.new(0.2, 0.6, 0.8)
+minimizeButton.TextColor3 = Color3.new(1, 1, 1)
+minimizeButton.Font = Enum.Font.SourceSansBold
+minimizeButton.TextSize = 18
+minimizeButton.Parent = buttonFrame
+
+local isMinimized = false
+local buttonElements = {} -- Store button elements to toggle visibility
+local inputElements = {} -- Store input elements to toggle visibility
+
+local function toggleVisibility(visible)
+    for _, button in ipairs(buttonElements) do
+        button.Visible = visible
+    end
+    for _, input in ipairs(inputElements) do
+        input.Visible = visible
+    end
+end
+
+minimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    buttonFrame.Size = isMinimized and UDim2.new(0, 250, 0, 40) or UDim2.new(0, 250, 0, 400)
+    toggleVisibility(not isMinimized)
+end)
+
+-- Create an input box for the repeat count
+local inputBox = Instance.new("TextBox")
+inputBox.Size = UDim2.new(0, 200, 0, 40)
+inputBox.Position = UDim2.new(0, 25, 0, 350)
+inputBox.PlaceholderText = "Enter repeat count"
+inputBox.Text = ""
+inputBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+inputBox.TextColor3 = Color3.new(1, 1, 1)
+inputBox.Font = Enum.Font.SourceSansBold
+inputBox.TextSize = 18
+inputBox.Parent = buttonFrame
+
+table.insert(inputElements, inputBox) -- Add input box to the toggle list
+
+-- Function to create buttons
+local function createButton(parent, text, position, onClick)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Position = position
+    button.Text = text
+    button.BackgroundColor3 = Color3.new(0.2, 0.6, 0.8)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 24
+    button.Parent = parent
+
+    table.insert(buttonElements, button) -- Add button to the toggle list
+
+    button.MouseButton1Click:Connect(function()
+        local repeatCount = tonumber(inputBox.Text) or 1
+        for i = 1, repeatCount do
+            onClick()
+            if i % 10 == 0 then
+                task.wait() -- Prevent freezing by yielding every 10 iterations
+            end
+        end
+    end)
+end
+
+-- Create Buttons
+createButton(buttonFrame, "Spawn Lucky Block", UDim2.new(0, 25, 0, 50), function()
     game.ReplicatedStorage.SpawnLuckyBlock:FireServer()
 end)
 
-MainSection:NewButton("Spawn Super Block", "ButtonInfo", function()
+createButton(buttonFrame, "Spawn Super Block", UDim2.new(0, 25, 0, 110), function()
     game.ReplicatedStorage.SpawnSuperBlock:FireServer()
 end)
 
-MainSection:NewButton("Spawn Diamond Block", "ButtonInfo", function()
-    game.ReplicatedStorage.SpawnDiamondBlock:FireServer()
-end)
-
-MainSection:NewButton("Spawn Rainbow Block", "ButtonInfo", function()
+createButton(buttonFrame, "Spawn Rainbow Block", UDim2.new(0, 25, 0, 170), function()
     game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
 end)
 
-MainSection:NewButton("Spawn Galaxy Block", "ButtonInfo", function()
+createButton(buttonFrame, "Spawn Galaxy Block", UDim2.new(0, 25, 0, 230), function()
     game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+end)
+
+createButton(buttonFrame, "Spawn Void Block", UDim2.new(0, 25, 0, 290), function()
+    game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
+    game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+    game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
+    game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+    game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
+    game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+end)
+
 end)
 
 MainSection:NewButton("Spawn Void Block", "ButtonInfo", function()
