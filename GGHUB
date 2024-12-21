@@ -540,6 +540,37 @@ MainSection:NewButton("Bloxfruit Script 2", "ButtonInfo", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Yatsuraa/Yuri/main/Winterhub_V2.lua"))()
 end)
 
+local MainSection = Main:NewSection("Lucky Blocks")
+
+MainSection:NewButton("Spawn Block", "ButtonInfo", function()
+    game.ReplicatedStorage.SpawnLuckyBlock:FireServer()
+end)
+
+MainSection:NewButton("Spawn Super Block", "ButtonInfo", function()
+    game.ReplicatedStorage.SpawnSuperBlock:FireServer()
+end)
+
+MainSection:NewButton("Spawn Diamond Block", "ButtonInfo", function()
+    game.ReplicatedStorage.SpawnDiamondBlock:FireServer()
+end)
+
+MainSection:NewButton("Spawn Rainbow Block", "ButtonInfo", function()
+    game.ReplicatedStorage.SpawnRainbowBlock:FireServer()
+end)
+
+MainSection:NewButton("Spawn Galaxy Block", "ButtonInfo", function()
+    game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+end)
+
+MainSection:NewButton("Spawn Void Block", "ButtonInfo", function()
+    game.ReplicatedStorage.SpawnRainbowSuperBlock:FireServer()          
+game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+game.ReplicatedStorage.SpawnRainbowSuperBlock:FireServer()
+game.ReplicatedStorage.SpawnGalaxyBlock:FireServer()
+end)
+
+
+
 local MainSection = Main:NewSection("Natural Disaster Scripts")
 
 MainSection:NewButton("CH Hub", "ButtonInfo", function()
